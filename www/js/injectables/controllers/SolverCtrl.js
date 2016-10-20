@@ -7,8 +7,14 @@ angular.module('starter.controllers')
   // Flags
   $scope.preventDuplicates = true;
   $scope.searching = true;
-  $scope.matches = [];
   
+  // Initial Values
+  $scope.matches = [];
+  $scope.settings = {
+    duplicatesWhitelist: ""
+  };
+  
+  // Function mappings
   $scope.findMatch = findMatch;
   
   // Toggles
@@ -52,7 +58,11 @@ angular.module('starter.controllers')
     var result = true;
     
     if(commonRegex.hasDuplicates.test(word)) {
-      result = false;
+      var char = commonRegex.hasDuplicates.exec(word)[1];
+      
+      if($scope.settings.duplicatesWhitelist.indexOf(char) === -1) {
+        result = false;
+      }
     }
     
     return result;

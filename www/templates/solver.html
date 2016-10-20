@@ -20,6 +20,11 @@
         </label>
       </label>
 
+      <label class="item item-input item-stacked-label" ng-show="preventDuplicates">
+        <span class="input-label">Whitelisted duplicates</span>
+        <input type="text" ng-model="settings.duplicatesWhitelist" reg-ex-input reg-ex="^[a-z]+$" placeholder="enter a set of characters to whitelist for duplication">
+      </label>
+
 
       <button class="button ion-search button-block button-balanced" ng-click="findMatch(characters, wordFormat)">
         Find Match
