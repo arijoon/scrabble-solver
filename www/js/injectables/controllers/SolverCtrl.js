@@ -34,6 +34,7 @@ angular.module('starter.controllers')
     console.log(myRegex);
 
     $scope.matches = [];
+    $scope.matchDic = {};
 
     for(var key in dictionaries.english) {
 
@@ -44,6 +45,7 @@ angular.module('starter.controllers')
       if(myRegex.test(key) && checkAdditional(key)) {
         
         $scope.matches.push(key);
+        $scope.matchDic[key] = calculateScore(key);
       }
     }
     
@@ -66,6 +68,15 @@ angular.module('starter.controllers')
     }
     
     return result;
+  }
+  
+  function calculateScore(word) {
+    var score = 0;
+    for(var i = 0; i< word.length; i++) {
+      score += dictionaries.scores[word[i]];
+    }
+    
+    return score;
   }
   
   function applyStaticConversions(input, charset) {

@@ -39,9 +39,9 @@
     </div>
 
     <div class="card result-list" ng-if="matches.length > 0">
-      <div class="item item-divider">Found {{ matches.length }} words </div>
+      <div class="item item-divider">Found {{ matches.length }} words overall</div>
       <div class="item" ng-repeat="item in matches | filter:resultSearch track by $index">
-        {{ item }}
+        {{ item }} : {{ matchDic[item] }}
       </div>
     </div>
     <div class="card" ng-show="matches.length == 0 && !searching">
