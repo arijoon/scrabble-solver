@@ -65,21 +65,27 @@ angular.module('starter.controllers')
   }
 
   function checkAdditional(word) {
-    var result = true;
+    var result = true,
+        regex = commonRegex.hasDuplicates();
+    
+    do {
+      var match = regex.exec(word);
+      
+      if(match) {
+        var char = match[0];
 
-    if(commonRegex.hasDuplicates.test(word)) {
-      var char = commonRegex.hasDuplicates.exec(word)[1];
-
-      if($scope.settings.duplicatesWhitelist.indexOf(char) === -1) {
-        result = false;
+        if($scope.settings.duplicatesWhitelist.indexOf(char) === -1) {
+          result = false;
+        }
       }
-    }
-
+    } while (match);
+    
     return result;
   }
 
   function calculateScore(word) {
     var score = 0;
+    
     for(var i = 0; i< word.length; i++) {
       score += dictionaries.scores[word[i]];
     }

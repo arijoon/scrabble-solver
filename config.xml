@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="net.yaraee.scrabblesolver" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>scrambleSolver</name>
+<widget id="net.yaraee.scrabblesolver" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Scramble Solver</name>
   <description>
     Advanced Scrabble solver
   </description>
@@ -13,6 +13,7 @@
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="SplashScreenDelay" value="2000"/>
+  <preference name="ShowSplashScreenSpinner" value="true"/>
   <preference name="FadeSplashScreenDuration" value="2000"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>

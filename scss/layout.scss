@@ -1,7 +1,13 @@
 $error-red: rgba(200,0,0,.8);
+$border-gray: rgba(0,0,0,.8);
 
 .on-error { display: none; }
 
 .has-errors {
   .on-error { display: inline-block; color: $error-red; }
 }
+
+.row-header { font-weight: bold; border-bottom: solid 2px $border-gray; margin-bottom: 5px;
+  .col { text-align: center; }
+}
+.centre-first-col .col:first-child { text-align: center; font-weight: bold; }

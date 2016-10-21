@@ -1,6 +1,11 @@
 angular.module('starter.services')
   .factory("commonRegex", function() {
+    
     return {
-      hasDuplicates: /^.*(.).*\1.*$/
+      hasDuplicates: hasDuplicates
+    };
+    
+    function hasDuplicates() {
+      return /(.)(?=.*\1)/g; 
     }
   });

@@ -49,15 +49,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/home.html'
       }
     }
-  // })
-  //
-  // .state('app.browse', {
-  //     url: '/browse',
-  //     views: {
-  //       'menuContent': {
-  //         templateUrl: 'templates/browse.html'
-  //       }
-  //     }
+  })
+  
+  .state('app.help', {
+      url: '/help',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/help.html'
+        }
+      }
   //   })
   //   .state('app.playlists', {
   //     url: '/playlists',
