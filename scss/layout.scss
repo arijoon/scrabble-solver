@@ -1,0 +1,7 @@
+$error-red: rgba(200,0,0,.8);
+
+.on-error { display: none; }
+
+.has-errors {
+  .on-error { display: inline-block; color: $error-red; }
+}

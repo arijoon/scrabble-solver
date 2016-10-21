@@ -22,6 +22,7 @@ angular.module('starter.controllers')
     $scope.preventDuplicates = !$scope.preventDuplicates;
   };
 
+
   //region Function definitions
   function findMatch(characters, wordFormat) {
     
@@ -87,6 +88,8 @@ angular.module('starter.controllers')
       '?' : "[" + charset + "]{1}"
     };
     
+    input = applyNumberMultiplier(input);
+    
     var order = ['?', '!', '_', '|'];
     
     var count = 0;
@@ -100,10 +103,15 @@ angular.module('starter.controllers')
       input = input.replaceAll(key, "(" + mapping[key] + ")");
     }
     
-    // var postfix = "";
-    // for(var i = 0; i < count, i ++) {
-    //   postfix += "\1[^\1]*"
-    // }
+    function applyNumberMultiplier(input) {
+      var regex = /([0-9]+)([_\!\|\?a-z])/ig;
+      
+      return input.replace(regex, function(a ,b, c) {
+        var result = Array(parseInt(b) + 1).join(c);
+        
+        return result;
+      });
+    }
     
     return input;
   }

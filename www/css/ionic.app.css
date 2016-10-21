@@ -9815,5 +9815,9 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-body {
-  background: red; }
+.on-error {
+  display: none; }
+
+.has-errors .on-error {
+  display: inline-block;
+  color: rgba(200, 0, 0, 0.8); }

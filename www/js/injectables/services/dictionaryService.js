@@ -1,5 +1,5 @@
 angular.module('starter.services')
-  .factory("dictionaries", function(englishDic) {
+  .factory("dictionaries", function(dics) {
     var scores = {
       a: 1,
       b: 4,
@@ -29,7 +29,7 @@ angular.module('starter.services')
       z: 10
     };
     return {
-      english: englishDic,
+      english: dics.enable,
       scores: scores
     }
   });

@@ -1,24 +1,29 @@
 <ion-view view-title="Solver">
   <ion-content>
     <div class="list list-inset">
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">Available Characters</span>
-        <input type="text" ng-model="characters" reg-ex-input reg-ex="^[a-z]+$" placeholder="Characters to to choose from">
-      </label>
-
-      <label class="item item-input item-stacked-label">
-        <span class="input-label">Word format</span>
-        <input type="text" ng-model="wordFormat" reg-ex-input reg-ex="^[\?_\!\|a-z]+$" placeholder="Format the word">
-      </label>
-      <label class="item item-toggle">
-        Prevent Duplicates
-        <label class="toggle">
-          <input type="checkbox" ng-model="preventDuplicates" ng-change="changeToggle()">
-          <div class="track">
-            <div class="handle"></div>
-          </div>
+      <form name="form">
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Available Characters</span>
+          <input type="text" ng-model="characters" name="charSet" reg-ex-input reg-ex="^[a-z]+$" placeholder="Characters to to choose from" required>
         </label>
-      </label>
+
+        <label class="item item-input item-stacked-label" ng-class="{ 'has-errors': form.wordFormat.$invalid }">
+          <span class="on-error pull-right">
+              <i class="icon ion-alert-circled"></i>
+          </span>
+          <span class="input-label">Word format</span>
+          <input type="text" ng-model="wordFormat" name="wordFormat" reg-ex-input reg-ex="^[\?_\!\|0-9a-z]+$" ng-pattern="/^([0-9]*[\?_\!\|a-z])+$/" placeholder="Format the word" required>
+        </label>
+        <label class="item item-toggle">
+          Prevent Duplicates
+          <label class="toggle">
+            <input type="checkbox" ng-model="preventDuplicates" ng-change="changeToggle()">
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+        </label>
+      </form>
 
       <label class="item item-input item-stacked-label" ng-show="preventDuplicates">
         <span class="input-label">Whitelisted duplicates</span>
@@ -26,7 +31,7 @@
       </label>
 
 
-      <button class="button ion-search button-block button-balanced" ng-click="findMatch(characters, wordFormat)">
+      <button class="button ion-search button-block button-balanced" ng-class="{ 'disabled': form.$invalid }" ng-disabled="form.$invalid" ng-click="findMatch(characters, wordFormat)">
         Find Match
       </button>
     </div>
