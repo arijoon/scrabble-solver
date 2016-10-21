@@ -82,6 +82,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   $urlRouterProvider.otherwise('/app/solver');
 });
 
-angular.module('starter.services', []);
 angular.module('starter.directives', []);
+angular.module('starter.services', ['ionic']);
 angular.module('starter.controllers', ['starter.services']);

@@ -8,3 +8,4 @@ plugins/
 *.swp
 *.swo
 .idea/vcs.xml
+.idea/workspace.xml

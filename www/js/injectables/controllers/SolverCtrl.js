@@ -1,22 +1,22 @@
 angular.module('starter.controllers')
 
-.controller('SolverCtrl', function($scope, $ionicModal, $timeout, dictionaries, commonRegex) {
+.controller('SolverCtrl', function($scope, $ionicModal, $timeout, dictionaries, commonRegex, loader) {
 
   setDebugValues();
 
   // Flags
   $scope.preventDuplicates = true;
   $scope.searching = true;
-  
+
   // Initial Values
-  $scope.matches = [];
+  $scope.matches = null;
   $scope.settings = {
     duplicatesWhitelist: ""
   };
-  
+
   // Function mappings
   $scope.findMatch = findMatch;
-  
+
   // Toggles
   $scope.changeToggle = function() {
     $scope.preventDuplicates = !$scope.preventDuplicates;
@@ -25,13 +25,16 @@ angular.module('starter.controllers')
 
   //region Function definitions
   function findMatch(characters, wordFormat) {
-    
+
     $scope.searching = true;
-    var charSet = characters;
+
+    loader.load(true);
     
+    var charSet = characters;
+
     var afterSpecialConversion = applyStaticConversions(wordFormat, characters),
         myRegex = new RegExp("^" + afterSpecialConversion + "$", "gi");
-    
+
     console.log(myRegex);
 
     $scope.matches = [];
@@ -40,46 +43,50 @@ angular.module('starter.controllers')
     for(var key in dictionaries.english) {
 
       if(!dictionaries.english.hasOwnProperty(key)) continue;
-      
+
       $scope.currentKey = key;
 
       if(myRegex.test(key) && checkAdditional(key)) {
-        
+
         $scope.matches.push(key);
         $scope.matchDic[key] = calculateScore(key);
       }
     }
-    
+
     $scope.matches.sort(function(a ,b) {
       return b.length - a.length;
     });
 
     $scope.searching = false;
+    
+    $timeout(function() {
+      loader.load(false);
+    }, 100);
   }
-  
+
   function checkAdditional(word) {
     var result = true;
-    
+
     if(commonRegex.hasDuplicates.test(word)) {
       var char = commonRegex.hasDuplicates.exec(word)[1];
-      
+
       if($scope.settings.duplicatesWhitelist.indexOf(char) === -1) {
         result = false;
       }
     }
-    
+
     return result;
   }
-  
+
   function calculateScore(word) {
     var score = 0;
     for(var i = 0; i< word.length; i++) {
       score += dictionaries.scores[word[i]];
     }
-    
+
     return score;
   }
-  
+
   function applyStaticConversions(input, charset) {
     var mapping = {
       '_': "[a-z]{1}",
@@ -87,32 +94,32 @@ angular.module('starter.controllers')
       '|': "[" + charset + "]?",
       '?' : "[" + charset + "]{1}"
     };
-    
+
     input = applyNumberMultiplier(input);
-    
+
     var order = ['?', '!', '_', '|'];
-    
+
     var count = 0;
-    
+
     for(var i = 0 ; i < order.length ; i++) {
       var key = order[i];
-      
+
       if(!mapping.hasOwnProperty(key))  continue;
       count++;
-      
+
       input = input.replaceAll(key, "(" + mapping[key] + ")");
     }
-    
+
     function applyNumberMultiplier(input) {
       var regex = /([0-9]+)([_\!\|\?a-z])/ig;
-      
+
       return input.replace(regex, function(a ,b, c) {
         var result = Array(parseInt(b) + 1).join(c);
-        
+
         return result;
       });
     }
-    
+
     return input;
   }
 
