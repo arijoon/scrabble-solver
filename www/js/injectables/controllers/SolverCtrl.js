@@ -30,6 +30,8 @@ angular.module('starter.controllers')
 
     loader.load(true);
     
+    // characters = sanitiseCharacters(characters);
+    
     var afterSpecialConversion = applyStaticConversions(wordFormat, characters),
         myRegex = new RegExp("^" + afterSpecialConversion + "$", "gi");
 
@@ -114,19 +116,30 @@ angular.module('starter.controllers')
       input = input.replaceAll(key, "(" + mapping[key] + ")");
     }
 
-    function applyNumberMultiplier(input) {
-      var regex = /([0-9]+)([_\!\|\?a-z])/ig;
-
-      return input.replace(regex, function(a ,b, c) {
-        var result = Array(parseInt(b) + 1).join(c);
-
-        return result;
-      });
-    }
-
     return input;
   }
 
+  function applyNumberMultiplier(input) {
+    var regex = /([0-9]+)([_\!\|\?a-z])/ig;
+
+    return input.replace(regex, function(a ,b, c) {
+      var result = Array(parseInt(b) + 1).join(c);
+
+      return result;
+    });
+  }
+  
+  function sanitiseCharacters(characters) {
+    
+    if(characters.indexOf('_') !== -1) {
+      characters += "a-z";
+    }
+    
+    characters = characters.replace(/_/g, "");
+
+    return characters;
+  }
+  
   function setDebugValues() {
     $scope.characters = "qoftvdw";
     $scope.wordFormat = "||||a||||"

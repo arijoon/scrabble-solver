@@ -8,6 +8,10 @@
   String.prototype.replaceAll = function (search, replacement) {
     return this.split(search).join(replacement);
   };
+  
+  String.prototype.escapeRegExp = function() {
+    return this.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+  };
   //endregion
   
   //region Object
