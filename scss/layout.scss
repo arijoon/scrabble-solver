@@ -11,3 +11,7 @@ $border-gray: rgba(0,0,0,.8);
   .col { text-align: center; }
 }
 .centre-first-col .col:first-child { text-align: center; font-weight: bold; }
+
+.help-basic {
+  .image-screen { width: 250px; }
+}

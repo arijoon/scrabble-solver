@@ -30,8 +30,6 @@ angular.module('starter.controllers')
 
     loader.load(true);
     
-    var charSet = characters;
-
     var afterSpecialConversion = applyStaticConversions(wordFormat, characters),
         myRegex = new RegExp("^" + afterSpecialConversion + "$", "gi");
 

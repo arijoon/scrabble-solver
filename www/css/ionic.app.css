@@ -9815,6 +9815,9 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.home-card .item-body p:first-child {
+  margin-top: 0; }
+
 .on-error {
   display: none; }
 
@@ -9832,3 +9835,6 @@ a.button {
 .centre-first-col .col:first-child {
   text-align: center;
   font-weight: bold; }
+
+.help-basic .image-screen {
+  width: 250px; }

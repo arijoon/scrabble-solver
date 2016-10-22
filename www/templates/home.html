@@ -1,7 +1,35 @@
-<ion-view>
+<ion-view view-title="Scrabble Solver">
   <ion-content>
-    <div class="middle">
-      <ion-spinner></ion-spinner>
+    <div class="card home-card">
+      <div class="item item-balanced">
+        Welcome
+      </div>
+      <div class="item item-body">
+        <p>
+          This is an advanced word constructor, use it to construct
+          specific words especially to win points in scrabble games. This
+          app provides a comprehensive interface for you to make use of
+          letter/word quantifiers (DL, DW, TL, TW).
+        </p>
+        <p>
+          Please select your option from menu bellow
+        </p>
+      </div>
+      <a class="item item-icon-left" ui-sref="app.help">
+        <i  class="icon ion-information-circled"></i>
+        Help
+        <span class="item-note">
+          learn how to use the app
+        </span>
+      </a>
+
+      <a class="item item-icon-left" ui-sref="app.solver">
+        <i  class="icon ion-play"></i>
+        Solve
+        <span class="item-note">
+          dive into the word solver
+        </span>
+      </a>
     </div>
   </ion-content>
 </ion-view>
