@@ -1,9 +1,14 @@
+"use strict";
+
 angular.module('starter.controllers')
 
 .controller('SolverCtrl', function($scope, $ionicModal, $timeout, dictionaries, commonRegex, loader) {
 
   setDebugValues();
 
+  // Constants
+  var maxFormatLength = 20;
+  
   // Flags
   $scope.preventDuplicates = true;
   $scope.searching = true;
@@ -29,48 +34,73 @@ angular.module('starter.controllers')
     $scope.searching = true;
 
     loader.load(true);
-    
-    // characters = sanitiseCharacters(characters);
-    
-    var afterSpecialConversion = applyStaticConversions(wordFormat, characters),
-        myRegex = new RegExp("^" + afterSpecialConversion + "$", "gi");
-
-    console.log(myRegex);
 
     $scope.matches = [];
     $scope.matchDic = {};
 
-    for(var key in dictionaries.english) {
-
-      if(!dictionaries.english.hasOwnProperty(key)) continue;
-
-      $scope.currentKey = key;
-
-      if(myRegex.test(key) && checkAdditional(key)) {
-
-        $scope.matches.push(key);
-        $scope.matchDic[key] = calculateScore(key);
-      }
-    }
-
-    $scope.matches.sort(function(a ,b) {
-      return b.length - a.length;
-    });
-
-    $scope.searching = false;
+    wordFormat = applyNumberMultiplier(wordFormat);
     
-    $timeout(function() {
-      loader.load(false);
+    if(wordFormat.length > maxFormatLength) {
+      wordFormat = wordFormat.slice(0,maxFormatLength);
+    }
+    
+    var obj = sanitiseCharacters(characters);
+
+    $timeout(function processAsync() {
+      
+      if (obj.shouldBrute) {
+
+        characters = obj.characters;
+
+        var possibleFormats = generatePossibleFormats(wordFormat);
+
+        for (var i = 0; i < possibleFormats.length; i++) {
+          innerFind(possibleFormats[i]);
+        }
+
+      } else {
+
+        innerFind(wordFormat);
+      }
+
+      function innerFind(wordFormat) {
+
+        var afterSpecialConversion = applyStaticConversions(wordFormat, characters),
+            myRegex                = new RegExp("^" + afterSpecialConversion + "$", "gi");
+
+        console.log(myRegex);
+
+        for (var key in dictionaries.english) {
+
+          if (!dictionaries.english.hasOwnProperty(key) || $scope.matchDic[key]) continue;
+
+          if (myRegex.test(key) && checkAdditional(key)) {
+
+            $scope.matchDic[key] = calculateScore(key);
+          }
+        }
+      }
+
+      $scope.matches = Object.keys($scope.matchDic);
+
+      $scope.matches.sort(function (a, b) {
+        return b.length - a.length;
+      });
+
+      $scope.searching = false;
+
+      loader.load(false, 100);
+      
     }, 100);
   }
 
   function checkAdditional(word) {
     var result = true,
         regex = commonRegex.hasDuplicates();
-    
+
     do {
       var match = regex.exec(word);
-      
+
       if(match) {
         var char = match[0];
 
@@ -79,13 +109,13 @@ angular.module('starter.controllers')
         }
       }
     } while (match);
-    
+
     return result;
   }
 
   function calculateScore(word) {
     var score = 0;
-    
+
     for(var i = 0; i< word.length; i++) {
       score += dictionaries.scores[word[i]];
     }
@@ -100,8 +130,6 @@ angular.module('starter.controllers')
       '|': "[" + charset + "]?",
       '?' : "[" + charset + "]{1}"
     };
-
-    input = applyNumberMultiplier(input);
 
     var order = ['?', '!', '_', '|'];
 
@@ -128,18 +156,43 @@ angular.module('starter.controllers')
       return result;
     });
   }
-  
-  function sanitiseCharacters(characters) {
-    
-    if(characters.indexOf('_') !== -1) {
-      characters += "a-z";
-    }
-    
-    characters = characters.replace(/_/g, "");
 
-    return characters;
+  function sanitiseCharacters(characters) {
+
+    var result = false;
+
+    if(characters.indexOf('_') !== -1) {
+      result = true;
+      characters = characters.replace(/_/g, "");
+    }
+
+    return {
+      characters : characters,
+      shouldBrute: result
+    }
   }
-  
+
+  function generatePossibleFormats(wordFormat) {
+    var mapping = {
+      '|': '!'
+    };
+
+    var count = (wordFormat.match(/\|/g) || []).length,
+        result = [];
+
+    for(var i = 0, n = 0, format; i < count; i++) {
+
+      n = 0;
+      format = wordFormat.replace(/\|/g, function(match, j, original) {
+        return (n++ == i) ? mapping['|'] : match;
+      });
+
+      result.push(format);
+    }
+
+    return result;
+  }
+
   function setDebugValues() {
     $scope.characters = "qoftvdw";
     $scope.wordFormat = "||||a||||"
