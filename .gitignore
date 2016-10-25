@@ -9,3 +9,6 @@ plugins/
 *.swo
 .idea/vcs.xml
 .idea/workspace.xml
+resources/ios/
+resources/android/
+Assets/
