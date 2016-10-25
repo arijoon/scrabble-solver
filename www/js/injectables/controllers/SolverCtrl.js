@@ -2,13 +2,13 @@
 
 angular.module('starter.controllers')
 
-.controller('SolverCtrl', function($scope, $ionicModal, $timeout, dictionaries, commonRegex, loader) {
+.controller('SolverCtrl', function($scope, $ionicModal, $timeout, $q, dictionaries, commonRegex, loader) {
 
   setDebugValues();
 
   // Constants
   var maxFormatLength = 20;
-  
+
   // Flags
   $scope.preventDuplicates = true;
   $scope.searching = true;
@@ -39,29 +39,37 @@ angular.module('starter.controllers')
     $scope.matchDic = {};
 
     wordFormat = applyNumberMultiplier(wordFormat);
-    
+
     if(wordFormat.length > maxFormatLength) {
       wordFormat = wordFormat.slice(0,maxFormatLength);
     }
-    
+
     var obj = sanitiseCharacters(characters);
 
-    $timeout(function processAsync() {
-      
-      if (obj.shouldBrute) {
+    (function processAsync() {
 
-        characters = obj.characters;
+      var defer = $q.defer();
 
-        var possibleFormats = generatePossibleFormats(wordFormat);
+      $timeout(function() {
+        if (obj.shouldBrute) {
 
-        for (var i = 0; i < possibleFormats.length; i++) {
-          innerFind(possibleFormats[i]);
+          characters = obj.characters;
+
+          var possibleFormats = generatePossibleFormats(wordFormat);
+
+          for (var i = 0; i < possibleFormats.length; i++) {
+            innerFind(possibleFormats[i]);
+          }
+
+        } else {
+
+          innerFind(wordFormat);
         }
 
-      } else {
+        defer.resolve();
+      }, 50);
 
-        innerFind(wordFormat);
-      }
+      return defer.promise;
 
       function innerFind(wordFormat) {
 
@@ -80,6 +88,7 @@ angular.module('starter.controllers')
           }
         }
       }
+    })().then(function onComplete() {
 
       $scope.matches = Object.keys($scope.matchDic);
 
@@ -90,8 +99,11 @@ angular.module('starter.controllers')
       $scope.searching = false;
 
       loader.load(false, 100);
-      
-    }, 100);
+    }).catch(function() {
+
+      loader.load(false);
+    });
+
   }
 
   function checkAdditional(word) {
