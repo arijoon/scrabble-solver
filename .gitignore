@@ -12,3 +12,4 @@ plugins/
 resources/ios/
 resources/android/
 Assets/
+cordova-keys.keystore

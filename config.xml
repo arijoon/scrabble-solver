@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="net.yaraee.scrabblesolver.debug" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Scramble Solver</name>
+<widget id="net.yaraee.scrabblesolver" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Scrabble Solver</name>
   <description>
     Advanced Scrabble solver
   </description>
