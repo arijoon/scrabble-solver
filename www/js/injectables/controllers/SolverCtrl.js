@@ -21,6 +21,7 @@ angular.module('starter.controllers')
 
   // Function mappings
   $scope.findMatch = findMatch;
+  $scope.sortMatches = sortBy;
 
   // Toggles
   $scope.changeToggle = function() {
@@ -93,7 +94,8 @@ angular.module('starter.controllers')
       $scope.matches = Object.keys($scope.matchDic);
 
       $scope.matches.sort(function (a, b) {
-        return b.length - a.length;
+        return $scope.matchDic[b] - $scope.matchDic[a];
+        // return b.length - a.length;
       });
 
       $scope.searching = false;
@@ -104,6 +106,23 @@ angular.module('starter.controllers')
       loader.load(false);
     });
 
+  }
+
+  function sortBy(method) {
+    if(method == 'length') {
+
+      $scope.matches.sort(function (a, b) {
+        return b.length - a.length;
+      });
+
+    } else if(method == 'score') {
+      $scope.matches.sort(function (a, b) {
+        return $scope.matchDic[b] - $scope.matchDic[a];
+      });
+
+    } else {
+      console.error('[!] Unknown sort method ' + method);
+    }
   }
 
   function checkAdditional(word) {

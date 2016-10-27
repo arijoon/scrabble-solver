@@ -48,8 +48,14 @@
     </div>
 
     <div class="card result-list" ng-if="matches.length > 0">
-      <div class="item item-divider">Found {{ matches.length }} words overall</div>
-      <div class="item" ng-repeat="item in matches | filter:resultSearch track by $index">
+      <div class="item item-divider">Found {{ results.length }} words overall</div>
+      <div class="item item-divider">
+        <span class="small">Order by</span>
+        <a class="link" ng-click="sortMatches('length')" >length</a>
+        |
+        <a class="link" ng-click="sortMatches('score')" >Score</a>
+      </div>
+      <div class="item" ng-repeat="item in matches | filter:resultSearch as results track by $index">
         {{ item }} : {{ matchDic[item] }}
       </div>
     </div>
