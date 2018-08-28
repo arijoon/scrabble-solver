@@ -1,3 +1,4 @@
+# DEPRECATED, PLEASE USE THE LATEST ONE WHICH IS LATEST IONIC AND ANGULAR
 # Scrabble solver
 
 ## An app made to help you generate words that match the dictionary
